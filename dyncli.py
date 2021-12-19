@@ -20,17 +20,20 @@ ops = parser.add_subparsers(help="Operation to run")
 op_config = ops.add_parser("config", help="Configure dyncli to save your token")
 op_config.set_defaults(func=write_token)
 
+#TODO: use /zones/by-name more often
+
 op_add = ops.add_parser("add", help="Add record to a zone/domain")
-op_add.add_argument('-a', help="Update A records instead of AAAA.", action='store_true')
+op_add.add_argument('-a', help="Add an A record instead of AAAA.", action='store_true')
 op_add.add_argument('id', help="Zone ID (use ls to view)")
 op_add.add_argument('--name', help="Name of the record. Will fail if left blank on an A record.")
 op_add.add_argument('--addr', help="Address. If not defined, it'll be set to your public IP.")
 op_add.set_defaults(func=o.add_record)
 
-# TODO: op_update = ops.add_parser("update", help="Update record")
-# TODO: op_add.add_argument('id', help="Zone ID (use ls to view)")
-# TODO: op_add.add_argument('record_id', help="ID of the record.")
-# TODO: op_add.add_argument('--addr', help="Address. If not defined, it'll be set to your public IP.")
+op_update = ops.add_parser("update", help="Update record")
+op_update.add_argument('id', help="Zone ID (use ls to view)")
+op_update.add_argument('record_id', help="ID of the record.")
+op_update.add_argument('--addr', help="Address. If not defined, it'll be set to your public IP.")
+op_update.set_defaults(func=o.upd_record)
 
 # TODO: op_rm = ops.add_parser("rm", help="Remove a record from a zone/domain")
 

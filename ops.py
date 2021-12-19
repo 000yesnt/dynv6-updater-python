@@ -31,6 +31,20 @@ def add_record(args):
     if r.ok:
         print(f"Request successful: {r.json()}")
 
+def upd_record(args):
+    auth = args.token
+    zid = args.id
+    rid = args.record_id
+    type = requests.get(api + f'zones/{zid}/records/{rid}', headers={"Authorization": f"Bearer {auth}"}).json()['type']
+    ip = args.addr if args.addr else requests.get(ipify[int(type == 'A')]).json()["ip"]
+    r = requests.patch(api + f"zones/{zid}/records/{rid}", headers={"Authorization": f"Bearer {auth}"}, json={
+        'data': ip
+    })
+    if r.ok:
+        print(f"success: {r.json()}")
+    else:
+        print(f"fail {r.status_code}: {r.json()} ")
+
 def ls(args):
     auth = args.token
     r = requests.get(api + "zones", headers={"Authorization": f"Bearer {auth}"})
